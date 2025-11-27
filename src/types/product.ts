@@ -4,9 +4,7 @@ export interface Product {
     description: string;
     price: number;
     rating:number;
-    stock: number;
     thumbnail: string;
-    images: string[];
 }
 
 export interface ProductListResponse {
