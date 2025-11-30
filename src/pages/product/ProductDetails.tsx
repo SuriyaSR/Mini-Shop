@@ -1,51 +1,43 @@
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card"
-import type { Product } from "@/types/product"
-import { StarIcon } from "lucide-react"
+import { useGetProductByIdQuery } from "@/api/productApi";
+import ProductActions from "@/components/product/details/ProductActions";
+import ProductDetailsSkeleton from "@/components/product/details/ProductDetailsSkeleton";
+import ProductGallery from "@/components/product/details/ProductGallery";
+import ProductInfo from "@/components/product/details/ProductInfo";
+import ProductReviews from "@/components/product/details/ProductReviews";
+import ProductSpecifications from "@/components/product/details/ProductSpecifications";
+import { Button } from "@/components/ui/button";
+import { useParams } from "react-router-dom"
 
-export function ProductDetails({productData} : {productData: Product}) {
+const ProductDetails = () => {
+    const {id} = useParams();
+    const numericId = Number(id);
+    const { data, isLoading, isError } = useGetProductByIdQuery(numericId);
 
+    if (!id) return <div>Invalid product ID</div>;
+
+    if (isLoading) return <ProductDetailsSkeleton />
+
+    if (isError) {
+        return(
+      <div className="text-center py-4">
+        <p className="text-gray-500">Failed to load products...</p>
+        <Button size="sm" variant="outline">Retry</Button>
+      </div>
+    )}
+
+    if (!data) return null;
+        
   return (
-    <Card className="w-full py-3">
-        <CardContent className="px-3">
-          <CardTitle className="text-sm mb-1">
-           <div className="rounded-md bg-gray-100 mb-2">            
-              <img src={productData.thumbnail}  loading="lazy"
-                  alt={productData.description} className="w-full h-48 object-contain" />
-           
-          </div>
-          </CardTitle>
-          <CardDescription className="text-xs mb-2 line-clamp-2">
-            {productData.title}
-          </CardDescription>
-          <div className="flex items-center space-x-1 mb-2">
-        <div className="flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-            <StarIcon
-                key={star}
-                className={`h-3 w-3 ${
-                productData.rating >= star
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
-                }`}
-            />
-            ))}
-        </div>
-
-        <span className="text-xs text-muted-foreground">
-            {productData.rating}
-        </span>
-        </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-bold">${productData.price}</span>
-            <Button size="sm" className="text-xs px-2 py-1 h-7">Add to Cart</Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="max-w-6xl mt-10 mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 p-8 md:p-10 border rounded-xl  bg-background shadow-sm ">
+      <ProductGallery images={data.images} thumbnail={data.thumbnail} />
+      <div className="space-y-6">
+        <ProductInfo product={data} />     
+        <ProductActions product={data} />  
+      </div>
+      <ProductSpecifications product={data} />
+      <ProductReviews reviews={data.reviews}/>       
+    </div>
   )
 }
+
+export default ProductDetails
