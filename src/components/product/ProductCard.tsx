@@ -8,7 +8,8 @@ import {
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion"
 import type { Product } from "@/types/product"
 import { motion, type Variants } from "framer-motion"
-import { StarIcon } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import ProductRating from "./details/ProductRating"
 
 const cardVariants : Variants = {
   hidden: {opacity:0, y: 40, scale: 0.95},
@@ -22,6 +23,7 @@ const cardVariants : Variants = {
 export function ProductCard({productData} : {productData: Product}) {
 
   const prefersReducedMotion = usePrefersReducedMotion();
+  const navigate = useNavigate();
 
   const variants = prefersReducedMotion ? {
     hidden: {opacity:0, y: 60},
@@ -38,9 +40,9 @@ export function ProductCard({productData} : {productData: Product}) {
     layout
     whileHover={!prefersReducedMotion ? { scale: 1.05 } : undefined}
     transition={{ duration: 0.25 }}
-    className="rounded-xl"
+    className="rounded-xl" onClick={()=>navigate(`/product/${productData.id}`)}
   >
-    <Card className="w-full py-3 rounded-xl shadow-sm bg-white transition-transform">
+    <Card className="w-full py-3 rounded-xl shadow-sm bg-background transition-transform">
       <CardContent className="px-3">
         <CardTitle className="text-sm mb-1">
           <div className="rounded-md bg-gray-100 mb-2">
@@ -60,24 +62,8 @@ export function ProductCard({productData} : {productData: Product}) {
           {productData.title}
         </CardDescription>
 
-        <div className="flex items-center space-x-1 mb-2">
-          <div className="flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <StarIcon
-                key={star}
-                className={`h-3 w-3 ${
-                  productData.rating >= star
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-xs text-muted-foreground">
-            {productData.rating}
-          </span>
-        </div>
-
+        <ProductRating ratingValue={productData.rating} />
+        
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold">${productData.price}</span>
           <Button size="sm" className="text-xs px-2 py-1 h-7">
