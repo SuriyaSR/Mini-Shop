@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button"
-import type { Product } from "@/types/product"
 
-interface ProductActionProps {
-  product: Product
-}
-
-const ProductActions: React.FC<ProductActionProps> = ({product}) => {
+const ProductActions = () => {
   return (
     <div className="flex gap-3 mt-4">
       <Button className="cursor-pointer">Add to Cart</Button>
