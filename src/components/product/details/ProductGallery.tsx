@@ -15,7 +15,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({images, thumbnail}) => {
        <motion.img
               src={useImage}
               loading="lazy"
-              className="w-full h-80 object-contain bg-background rounded-2xl p-4 content-center"
+              className="w-full h-80 object-contain bg-muted rounded-2xl p-4 content-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }}
@@ -24,7 +24,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({images, thumbnail}) => {
         <div className="flex gap-3 mt-3 justify-center">
             {imageList.map((img, index) =>  
             <div key={index} onClick={() => setUseImage(img)} 
-            className={`h-16 w-16 border rounded-md p-1 cursor-pointer bg-background
+            className={`h-16 w-16 border rounded-md p-1 cursor-pointer bg-muted
             ${useImage === img ? 'border-black' : 'border-border'}`}>
                 <img src={img} className="w-full h-full rounded-md object-contain"/>
             </div>
