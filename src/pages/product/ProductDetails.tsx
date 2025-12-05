@@ -1,6 +1,6 @@
 import { useGetProductByIdQuery } from "@/api/productApi";
 import ProductActions from "@/components/product/details/ProductActions";
-import ProductDetailsSkeleton from "@/components/product/details/ProductDetailsSkeleton";
+import ProductDetailsSkeleton from "@/components/product/skeleton/ProductDetailsSkeleton";
 import ProductGallery from "@/components/product/details/ProductGallery";
 import ProductInfo from "@/components/product/details/ProductInfo";
 import ProductReviews from "@/components/product/details/ProductReviews";
@@ -28,7 +28,7 @@ const ProductDetails = () => {
     if (!data) return null;
         
   return (
-    <div className="max-w-6xl mt-10 mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 p-8 md:p-10 border rounded-xl  bg-background shadow-sm ">
+    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 p-4 md:p-4 border rounded-xl  bg-background shadow-sm ">
       <ProductGallery images={data.images} thumbnail={data.thumbnail} />
       <div className="space-y-6">
         <ProductInfo product={data} />     
