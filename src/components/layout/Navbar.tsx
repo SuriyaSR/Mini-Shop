@@ -13,7 +13,7 @@ const Navbar = () => {
   const categories = data ? ["All Categories", ...data.map((c) => c.name)] : ["All Categories"];
 
   return (
-    <header className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b">
+    <header className="sticky top-0 z-40 bg-background border-b">
       <div className="max-w-6xl mx-auto h-16 px-3 sm:px-4 flex items-center justify-between gap-3">
         <div className="flex items-center shrink-0">
           <Link to="/" className="flex items-center gap-2">
