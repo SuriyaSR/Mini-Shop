@@ -22,7 +22,7 @@ const ProductResults = () => {
         {isLoading && (
           <motion.div
               key="content"
-              initial={{ opacity: 0 }}
+              // initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}>
@@ -36,7 +36,7 @@ const ProductResults = () => {
         {
           !isLoading && data && (
             <motion.div
-              key="skeleton"
+              key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

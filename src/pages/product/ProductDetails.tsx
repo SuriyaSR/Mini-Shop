@@ -9,33 +9,34 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom"
 
 const ProductDetails = () => {
-    const {id} = useParams();
-    const numericId = Number(id);
-    const { data, isLoading, isError } = useGetProductByIdQuery(numericId);
+  const { id } = useParams();
+  const numericId = Number(id);
+  const { data, isLoading, isError } = useGetProductByIdQuery(numericId);
 
-    if (!id) return <div>Invalid product ID</div>;
+  if (!id) return <div>Invalid product ID</div>;
 
-    if (isLoading) return <ProductDetailsSkeleton />
+  if (isLoading) return <ProductDetailsSkeleton />
 
-    if (isError) {
-        return(
+  if (isError) {
+    return (
       <div className="text-center py-4">
         <p className="text-gray-500">Failed to load products...</p>
         <Button size="sm" variant="outline">Retry</Button>
       </div>
-    )}
+    )
+  }
 
-    if (!data) return null;
-        
+  if (!data) return null;
+
   return (
-    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 p-4 md:p-4 border rounded-xl  bg-background shadow-sm ">
+    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 p-4 md:p-4 border border-border rounded-xl bg-card shadow-sm ">
       <ProductGallery images={data.images} thumbnail={data.thumbnail} />
       <div className="space-y-6">
-        <ProductInfo product={data} />     
-        <ProductActions/>  
+        <ProductInfo product={data} />
+        <ProductActions />
       </div>
       <ProductSpecifications product={data} />
-      <ProductReviews reviews={data.reviews}/>       
+      <ProductReviews reviews={data.reviews} />
     </div>
   )
 }
