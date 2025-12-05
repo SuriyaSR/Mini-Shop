@@ -14,6 +14,7 @@ Includes product listing, product details, cart workflow, typed components, reus
 * 🎨 Styled with Tailwind CSS + shadcn/ui components
 * ♻️ Reusable UI components
 * 🧩 Scalable folder structure for real-world apps
+* 🌗 Dark / Light Mode (Theming)
 
   ## 🧰 Tech Stack
 
