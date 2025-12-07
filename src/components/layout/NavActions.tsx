@@ -12,24 +12,24 @@ const NavActions = ({orientation = "horizontal", className=""}: NavActionProps) 
     const {isDark, toggleMode} = useDarkMode();
 
   return (
-    <div className={`flex items-center justify-between gap-1 text-sm
+    <div className={`navbar-icons flex items-center justify-between gap-1 text-sm
         ${isVertical ? "" : ""}
         ${className}
         `}>
-        <Button>
+        <Button variant="outline">
             <ShoppingCart className="w-5 h-5"/>
             {isVertical && <span>Cart</span>}
         </Button>
-        <Button>
+        <Button variant="outline" >
             <BookHeart className="w-5 h-5"/>
             {isVertical && <span>Wishlist</span>}
         </Button>
-        <Button>
+        <Button variant="outline" >
             <User className="w-5 h-5"/>
             {isVertical && <span>Account</span>}
         </Button>
         <Button onClick={toggleMode}
-            className="">
+            variant="outline">
             {isDark ? <Sun className="w-5 h-5 text-yellow-300"/> : <Moon className="w-5 h-5"/>}
         </Button>
     </div>

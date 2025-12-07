@@ -5,15 +5,16 @@ import ProductDetails from "./pages/product/ProductDetails"
 import AppLayout from "./components/layout/AppLayout"
 import CartPage from "./pages/cart/CartPage"
 import WishlistPage from "./pages/wishlist/WishlistPage"
+import ProductResults from "./pages/product/ProductResults"
 
-function App() {
-
-  
+function App() { 
 
   return (
     <Routes>
      <Route element={<AppLayout />} > 
         <Route path="/" element={<Home /> } />
+        <Route path="/products" element={<ProductResults />} />
+        <Route path="/products/:category" element={<ProductResults />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />

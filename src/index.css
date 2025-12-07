@@ -148,3 +148,9 @@
 .animate-slide-up-fade {
   animation: slide-up-fade 0.25s ease-out;
 }
+
+@layer components {
+  .navbar-icons button {
+    @apply cursor-pointer;
+  }
+}

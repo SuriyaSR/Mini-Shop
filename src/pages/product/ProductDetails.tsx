@@ -1,6 +1,5 @@
 import { useGetProductByIdQuery } from "@/api/productApi";
 import ProductActions from "@/components/product/details/ProductActions";
-import ProductDetailsSkeleton from "@/components/product/skeleton/ProductDetailsSkeleton";
 import ProductGallery from "@/components/product/details/ProductGallery";
 import ProductInfo from "@/components/product/details/ProductInfo";
 import ProductReviews from "@/components/product/details/ProductReviews";
@@ -11,11 +10,11 @@ import { useParams } from "react-router-dom"
 const ProductDetails = () => {
   const { id } = useParams();
   const numericId = Number(id);
-  const { data, isLoading, isError } = useGetProductByIdQuery(numericId);
+  const { data, isError } = useGetProductByIdQuery(numericId);
 
   if (!id) return <div>Invalid product ID</div>;
 
-  if (isLoading) return <ProductDetailsSkeleton />
+  // if (isLoading) return <ProductDetailsSkeleton />
 
   if (isError) {
     return (

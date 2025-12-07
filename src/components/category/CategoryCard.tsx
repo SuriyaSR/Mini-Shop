@@ -1,0 +1,61 @@
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { motion, type Variants } from "framer-motion"
+import { useNavigate } from "react-router-dom";
+import { useGetProductCategoryImageQuery } from "@/api/categoryApi";
+import type { Category } from "@/types/category";
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  show: {
+    opacity: 1, y: 0, scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.25, 0.1, 0.25, 1],
+    }
+  },
+}
+
+const CategoryCard = ({ categoryObject }: { categoryObject: Category }) => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const navigate = useNavigate();
+  const firstProduct = useGetProductCategoryImageQuery(categoryObject.slug);
+  const categoryData = firstProduct.data?.products[0]; 
+
+  const variants = prefersReducedMotion ? {
+    hidden: { opacity: 0, y: 60 },
+    show: { opacity: 1, transition: { duration: 0.4, delay: 0.1 } },
+    exit: { opacity: 0 },
+  } : cardVariants;
+  return (
+    <motion.div
+      variants={variants}
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      layout
+      whileHover={!prefersReducedMotion ? { scale: 1.05 } : undefined}
+      transition={{ duration: 0.25 }}
+      className="rounded-xl" onClick={() => navigate(`/products/${categoryObject.slug}`)}
+    >
+      <div className="w-full rounded-xl shadow-sm border border-border transition-transform">
+        <div className="rounded-md bg-muted">
+              <motion.img
+                src={categoryData?.thumbnail}
+                loading="lazy"
+                alt={categoryData?.description}
+                className="w-full h-48 object-contain"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+              />
+            </div>
+
+          <span className="font-extrabold">
+            {categoryObject.name}
+          </span>
+      </div>
+    </motion.div>
+  )
+}
+
+export default CategoryCard
