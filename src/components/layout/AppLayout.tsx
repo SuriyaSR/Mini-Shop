@@ -5,7 +5,7 @@ import MobileBottomBar from "./MobileBottomBar"
 
 const AppLayout = () => {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-muted flex flex-col">
       <Navbar />
       <main>
         <Outlet />

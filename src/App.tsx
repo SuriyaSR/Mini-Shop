@@ -6,9 +6,7 @@ import AppLayout from "./components/layout/AppLayout"
 import CartPage from "./pages/cart/CartPage"
 import WishlistPage from "./pages/wishlist/WishlistPage"
 
-function App() {
-
-  
+function App() { 
 
   return (
     <Routes>
