@@ -1,12 +1,36 @@
 import { Button } from "@/components/ui/button";
-import { useGetProductsQuery } from "@/api/productApi";
 import ProductCardSkeleton from "../../components/product/skeleton/ProductCardSkeleton";
 import ProductGrid from "@/components/product/ProductGrid";
 import { AnimatePresence, motion } from "framer-motion";
+import { useParams } from "react-router-dom";
+import { useGetProductByCategoryQuery } from "@/api/categoryApi";
+import { useGetProductsQuery } from "@/api/productApi";
 
 const ProductResults = () => {
+  const { category } = useParams();
+  
+ // 1. Fetch ALL products if NO category is selected
+  const { 
+    data: allData, 
+    isLoading: isLoadingAll, 
+    isError: isErrorAll 
+  } = useGetProductsQuery(undefined, {
+    skip: !!category, // Skip this query if category exists
+  });
 
-  const {data, isLoading, isError} = useGetProductsQuery();
+  // 2. Fetch CATEGORY products if category IS selected
+  const { 
+    data: categoryData, 
+    isLoading: isLoadingCategory, 
+    isError: isErrorCategory 
+  } = useGetProductByCategoryQuery(category ?? "", {
+    skip: !category, // Skip this query if category is missing
+  });
+
+  // Determine which data to use based on the route
+  const data = category ? categoryData : allData;
+  const isLoading = category ? isLoadingCategory : isLoadingAll;
+  const isError = category ? isErrorCategory : isErrorAll;  
 
   if (isError){
     return(

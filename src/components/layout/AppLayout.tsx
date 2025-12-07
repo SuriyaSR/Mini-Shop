@@ -11,8 +11,8 @@ const AppLayout = () => {
         <Outlet />
       </main>
       <div className="hidden md:block">
-       <Footer />
-      </div>    
+        <Footer />
+      </div>
       <MobileBottomBar />
     </div>
   )

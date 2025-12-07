@@ -2,7 +2,7 @@ import App_Banner from "@/assets/app_banner.jpeg"
 import { Button } from "../ui/button"
 const Banner = () => {
   return (
-    <div className="relative w-full h-80 overflow-hidden rounded-xl">
+    <div className="mt-10 relative w-full h-80 overflow-hidden rounded-xl">
       <img src={App_Banner} alt="Discount Banner" className="w-full h-full object-cover" />
 
       <div className="absolute inset-0 bg-black/40"></div>
