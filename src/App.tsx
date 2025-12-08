@@ -13,8 +13,10 @@ function App() {
     <Routes>
      <Route element={<AppLayout />} > 
         <Route path="/" element={<Home /> } />
+        <Route path="/products/:category/:searchText" element={<ProductResults />} />
+        <Route path="/products/:searchText" element={<ProductResults />} />
         <Route path="/products" element={<ProductResults />} />
-        <Route path="/products/:category" element={<ProductResults />} />
+        <Route path="/category/:category" element={<ProductResults />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />

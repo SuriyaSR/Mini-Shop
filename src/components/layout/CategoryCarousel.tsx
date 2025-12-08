@@ -34,8 +34,8 @@ const CategoryCarousel = () => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="rounded-full p-2 shadow-md bg-white hover:bg-gray-100"/>
+      <CarouselNext className="rounded-full p-2 shadow-md bg-white hover:bg-gray-100"/>
     </Carousel>
     </div>
   )

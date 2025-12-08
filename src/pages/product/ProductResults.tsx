@@ -4,33 +4,104 @@ import ProductGrid from "@/components/product/ProductGrid";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useGetProductByCategoryQuery } from "@/api/categoryApi";
-import { useGetProductsQuery } from "@/api/productApi";
+import { useGetProductsQuery, useSearchProductsQuery } from "@/api/productApi";
+import type { Product } from "@/types/product";
 
 const ProductResults = () => {
-  const { category } = useParams();
+  const { category, searchText } = useParams();
+
+  // Determine the scenario:
+  const isSearch = !!searchText;
+  const isCategory = !!category && !searchText;  
+  const isSearchWithCategory = !!searchText && !!category; 
+  const isViewAll = !category && !searchText;
+
+  let headingMessage = "";
+
+  if (isSearch && !category) {
+    headingMessage = `Search results for "${searchText}"`;
+  }
+  else if (isCategory && !isSearch) {
+    headingMessage = `Showing products in "${category}"`;
+  }
+  else if (isViewAll) {
+    headingMessage = "Showing all products";
+  }
+  else if (isSearchWithCategory) {
+    headingMessage = `Search results for "${searchText}" in "${category}"`;
+  }
   
- // 1. Fetch ALL products if NO category is selected
-  const { 
-    data: allData, 
-    isLoading: isLoadingAll, 
-    isError: isErrorAll 
+ // FETCH — Search products
+  const {
+    data: searchData,
+    isLoading: isLoadingSearch,
+    isError: isErrorSearch
+  } = useSearchProductsQuery(searchText!, {
+    skip: !isSearch, // only fetch if searchText exists
+  });
+
+  // FETCH — Category products
+  const {
+    data: categoryData,
+    isLoading: isLoadingCategory,
+    isError: isErrorCategory
+  } = useGetProductByCategoryQuery(category!, {
+    skip: !isCategory, // skip if it's not a pure category scenario
+  });
+
+  // FETCH — All products
+  const {
+    data: allData,
+    isLoading: isLoadingAll,
+    isError: isErrorAll
   } = useGetProductsQuery(undefined, {
-    skip: !!category, // Skip this query if category exists
+    skip: !isViewAll, // only fetch if we are in /products route
   });
 
-  // 2. Fetch CATEGORY products if category IS selected
-  const { 
-    data: categoryData, 
-    isLoading: isLoadingCategory, 
-    isError: isErrorCategory 
-  } = useGetProductByCategoryQuery(category ?? "", {
-    skip: !category, // Skip this query if category is missing
-  });
+  // 4️⃣ DETERMINE FINAL DATA
 
-  // Determine which data to use based on the route
-  const data = category ? categoryData : allData;
-  const isLoading = category ? isLoadingCategory : isLoadingAll;
-  const isError = category ? isErrorCategory : isErrorAll;  
+  let finalData : Product[] = [];
+  let isLoading = false;
+  let isError = false;
+
+  // SCENARIO 1: /products/search/:searchText (search only)
+  if (isSearch && !category) {
+    finalData = searchData?.products || [];
+    isLoading = isLoadingSearch;
+    isError = isErrorSearch;
+  }
+
+  // SCENARIO 2: /products/:category (category only)
+  else if (isCategory) {
+    finalData = categoryData?.products || [];
+    isLoading = isLoadingCategory;
+    isError = isErrorCategory;
+  }
+
+  // SCENARIO 3: /products (view all)
+  else if (isViewAll) {
+    finalData = allData?.products || [];
+    isLoading = isLoadingAll;
+    isError = isErrorAll;
+  }
+
+  // SCENARIO 4: Search + Category filter combined
+  else if (isSearchWithCategory) {
+    // first take API search results
+    const results = searchData?.products || [];
+
+    // manually filter by category/
+    finalData = results;
+    finalData = results.filter(item => item.category === category);
+
+
+    isLoading = isLoadingSearch;
+    isError = isErrorSearch;
+  }
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error loading products.</p>;
+  if (finalData.length === 0) return <p>No products found.</p>;
 
   if (isError){
     return(
@@ -42,6 +113,7 @@ const ProductResults = () => {
   }
   return (
     <div>
+      <h2 className="text-xl font-medium mt-4 px-6">{headingMessage}</h2>
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -57,14 +129,14 @@ const ProductResults = () => {
           </motion.div>
         )}
         {
-          !isLoading && data && (
+          !isLoading && finalData && (
             <motion.div
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}>
-            <ProductGrid products={data.products} />
+            <ProductGrid products={finalData} />
           </motion.div>
         )}
       </AnimatePresence>
