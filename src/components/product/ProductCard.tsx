@@ -10,6 +10,8 @@ import type { Product } from "@/types/product"
 import { motion, type Variants } from "framer-motion"
 import { useNavigate } from "react-router-dom"
 import ProductRating from "./details/ProductRating"
+import { useAppDispatch } from "@/app/hooks"
+import { addToCart } from "@/features/cart/cartSlice"
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
@@ -26,6 +28,7 @@ export function ProductCard({ productData }: { productData: Product }) {
 
   const prefersReducedMotion = usePrefersReducedMotion();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const variants = prefersReducedMotion ? {
     hidden: { opacity: 0, y: 60 },
@@ -42,7 +45,7 @@ export function ProductCard({ productData }: { productData: Product }) {
       layout
       whileHover={!prefersReducedMotion ? { scale: 1.05 } : undefined}
       transition={{ duration: 0.25 }}
-      className="rounded-xl" onClick={() => navigate(`/product/${productData.id}`)}
+      className="rounded-xl cursor-pointer" onClick={() => navigate(`/product/${productData.id}`)}
     >
       <Card className="w-full py-3 rounded-xl shadow-sm bg-card border border-border transition-transform">
         <CardContent className="px-3">
@@ -68,7 +71,10 @@ export function ProductCard({ productData }: { productData: Product }) {
 
           <div className="flex items-center justify-between">
             <span className="text-sm font-bold">${productData.price}</span>
-            <Button size="sm" className="text-xs px-2 py-1 h-7">
+            <Button size="sm" className="cursor-pointer text-xs px-2 py-1 h-7" onClick={(e) => {
+                e.stopPropagation();
+                dispatch(addToCart(productData));
+              }}>
               Add to Cart
             </Button>
           </div>

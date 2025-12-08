@@ -10,10 +10,10 @@ import type { Category } from "@/types/category";
 
 const Navbar = () => {
   
-  const [searchInputText, setSearchInputText] = useState<string | undefined>("");
+  const [searchInputText, setSearchInputText] = useState<string>("");
 
   const {data} = useGetCategoriesQuery();
-  const allCategoryObject = {
+  const allCategoryObject : Category  = {
     slug: "all",
     name: "All Categories"
   }
@@ -30,8 +30,7 @@ const Navbar = () => {
       navigate(`/products/${searchInputText}`)
       setCategorySelected(allCategoryObject);
       setSearchInputText("");
-    }
-      
+    }      
   }
 
   return (

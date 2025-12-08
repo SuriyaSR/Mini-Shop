@@ -32,7 +32,7 @@ const ProductDetails = () => {
       <ProductGallery images={data.images} thumbnail={data.thumbnail} />
       <div className="space-y-6">
         <ProductInfo product={data} />
-        <ProductActions />
+        <ProductActions product={data}/>
       </div>
       <ProductSpecifications product={data} />
       <ProductReviews reviews={data.reviews} />

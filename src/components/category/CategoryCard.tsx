@@ -33,27 +33,28 @@ const CategoryCard = ({ categoryObject }: { categoryObject: Category }) => {
       animate="show"
       exit="exit"
       layout
-      whileHover={!prefersReducedMotion ? { scale: 1.05 } : undefined}
+      whileHover={!prefersReducedMotion ? { scale: 1.04 } : undefined}
       transition={{ duration: 0.25 }}
-      className="rounded-xl" onClick={() => navigate(`/category/${categoryObject.slug}`)}
+      className="cursor-pointer" onClick={() => navigate(`/category/${categoryObject.slug}`)}
     >
-      <div className="w-full rounded-xl shadow-sm border-2
-        hover:shadow-lg transition-all hover:-translate-y-1 hover:scale-[1.02]">
-        <div className="rounded-md bg-muted w-full object-contain">
+      <div className="w-full rounded-xl shadow-sm border-2 bg-background/40
+        hover:shadow-lg transition-all hover:-translate-y-1 p-4">
+        <div className="rounded-xl flex items-center justify-center h-44 w-full overflow-hidden object-contain bg-background/60">
               <motion.img
                 src={categoryData?.thumbnail}
                 loading="lazy"
                 alt={categoryData?.description}
-                className="w-full h-48 object-contain"
+                className="h-full p-3 object-contain"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
               />
             </div>
 
-          <span className="px-3 py-1 text-sm font-medium">
+          <p className="mt-3 text-center text-lg font-semibold text-foreground/80">
             {categoryObject.name}
-          </span>
+          </p>
       </div>
     </motion.div>
   )
