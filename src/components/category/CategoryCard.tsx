@@ -35,10 +35,11 @@ const CategoryCard = ({ categoryObject }: { categoryObject: Category }) => {
       layout
       whileHover={!prefersReducedMotion ? { scale: 1.05 } : undefined}
       transition={{ duration: 0.25 }}
-      className="rounded-xl" onClick={() => navigate(`/products/${categoryObject.slug}`)}
+      className="rounded-xl" onClick={() => navigate(`/category/${categoryObject.slug}`)}
     >
-      <div className="w-full rounded-xl shadow-sm border border-border transition-transform">
-        <div className="rounded-md bg-muted">
+      <div className="w-full rounded-xl shadow-sm border-2
+        hover:shadow-lg transition-all hover:-translate-y-1 hover:scale-[1.02]">
+        <div className="rounded-md bg-muted w-full object-contain">
               <motion.img
                 src={categoryData?.thumbnail}
                 loading="lazy"
@@ -50,7 +51,7 @@ const CategoryCard = ({ categoryObject }: { categoryObject: Category }) => {
               />
             </div>
 
-          <span className="font-extrabold">
+          <span className="px-3 py-1 text-sm font-medium">
             {categoryObject.name}
           </span>
       </div>
